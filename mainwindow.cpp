@@ -41,12 +41,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "writeregistermodel.h"
+#include "webserver.h"
+
+#include <iostream>
+#include <sstream>
 
 #include <QModbusTcpClient>
 #include <QModbusRtuSerialMaster>
 #include <QStandardItemModel>
 #include <QStatusBar>
 #include <QUrl>
+
+using namespace std;
 
 enum ModbusConnection {
     Serial,
@@ -60,6 +66,16 @@ MainWindow::MainWindow(QWidget *parent)
     , modbusDevice(nullptr)
 {
     ui->setupUi(this);
+
+//Variaveis de teste
+
+    mWebServer = new WebServer(this);
+        mWebServer->listen(QHostAddress::Any,1234);
+
+    connect(mWebServer, SIGNAL(messageReceived(QString)),
+        this, SLOT(onMessageReceived(QString)));
+// fim
+
 
     initActions();
 
@@ -107,6 +123,10 @@ MainWindow::MainWindow(QWidget *parent)
         if (currentIndex > lastPossibleIndex)
             ui->writeSize->setCurrentIndex(lastPossibleIndex);
     });
+
+
+    on_connectButton_clicked();
+
 }
 
 MainWindow::~MainWindow()
@@ -150,6 +170,39 @@ void MainWindow::on_connectType_currentAdressChanged(const QString Adress)
         connect(modbusDevice, &QModbusClient::stateChanged,
                 this, &MainWindow::onStateChanged);
     }
+}
+
+void MainWindow::onMessageReceived(const QString &Message)
+{
+   // ui->listWidget->addItem(Message);
+
+    QString tmp;
+
+    int Adress, Value;
+    std::string str;
+
+    if (Message == "Read") {
+        on_readButton_clicked();
+    }
+    else {
+        QStringList list = Message.split("\n");
+
+
+        for (int var = 0; var < list.size(); ++var) {
+            tmp = list.at(var);
+
+            std::istringstream  iss(tmp.toStdString().c_str());
+
+            iss >> str >> Adress >> str >> str >>Value;
+
+            writeModel->m_holdingRegisters[Adress] = Value;
+
+        }
+
+        on_writeButton_clicked();
+    }
+
+
 }
 
 void MainWindow::on_connectButton_clicked()
@@ -204,11 +257,13 @@ void MainWindow::on_readButton_clicked()
             delete reply; // broadcast replies return immediately
     } else {
         statusBar()->showMessage(tr("Read error: ") + modbusDevice->errorString(), 5000);
-    }
+    }    
 }
 
 void MainWindow::readReady()
 {
+    QStringList ListTmp;
+
     auto reply = qobject_cast<QModbusReply *>(sender());
     if (!reply)
         return;
@@ -216,10 +271,11 @@ void MainWindow::readReady()
     if (reply->error() == QModbusDevice::NoError) {
         const QModbusDataUnit unit = reply->result();
         for (uint i = 0; i < unit.valueCount(); i++) {
-            const QString entry = tr("Address: %1, Value: %2").arg(unit.startAddress())
+            const QString entry = tr("Address: %1, Value: %2").arg(i)
                                      .arg(QString::number(unit.value(i),
-                                          unit.registerType() <= QModbusDataUnit::Coils ? 10 : 16));
+                                          unit.registerType() <= QModbusDataUnit::HoldingRegisters ? 10 : 16));
             ui->readValue->addItem(entry);
+            ListTmp << entry;
         }
     } else if (reply->error() == QModbusDevice::ProtocolError) {
         statusBar()->showMessage(tr("Read response error: %1 (Mobus exception: 0x%2)").
@@ -232,6 +288,8 @@ void MainWindow::readReady()
     }
 
     reply->deleteLater();
+
+    mWebServer->_sendTextMessage(ListTmp.join("\n"));
 }
 
 void MainWindow::on_writeButton_clicked()
@@ -243,10 +301,7 @@ void MainWindow::on_writeButton_clicked()
     QModbusDataUnit writeUnit = writeRequest();
     QModbusDataUnit::RegisterType table = writeUnit.registerType();
     for (uint i = 0; i < writeUnit.valueCount(); i++) {
-        if (table == QModbusDataUnit::Coils)
-            writeUnit.setValue(i, writeModel->m_coils[i + writeUnit.startAddress()]);
-        else
-            writeUnit.setValue(i, writeModel->m_holdingRegisters[i + writeUnit.startAddress()]);
+        writeUnit.setValue(i, writeModel->m_holdingRegisters[i + writeUnit.startAddress()]);
     }
 
     if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, ui->serverEdit->value())) {
@@ -322,4 +377,9 @@ QModbusDataUnit MainWindow::writeRequest() const
     // do not go beyond 10 entries
     int numberOfEntries = qMin(ui->writeSize->currentText().toInt(), 10 - startAddress);
     return QModbusDataUnit(table, startAddress, numberOfEntries);
+}
+
+void MainWindow::on_buttonSend_clicked()
+{
+
 }

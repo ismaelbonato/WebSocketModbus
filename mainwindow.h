@@ -43,6 +43,7 @@
 
 #include <QMainWindow>
 #include <QModbusDataUnit>
+#include <regex>
 
 QT_BEGIN_NAMESPACE
 
@@ -58,6 +59,7 @@ QT_END_NAMESPACE
 
 class SettingsDialog;
 class WriteRegisterModel;
+class WebServer;
 
 class MainWindow : public QMainWindow
 {
@@ -84,12 +86,18 @@ private slots:
 
     void on_connectType_currentAdressChanged(const QString Adress);
 
+    void onMessageReceived(const QString &Message);
+    void on_buttonSend_clicked();
+
 private:
     Ui::MainWindow *ui;
     QModbusReply *lastRequest;
     QModbusClient *modbusDevice;
     SettingsDialog *m_settingsDialog;
     WriteRegisterModel *writeModel;
+
+
+    WebServer *mWebServer;
 };
 
 #endif // MAINWINDOW_H

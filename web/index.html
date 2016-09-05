@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+    <thead>
+        <meta charset="utf-8"/>
+        <title>App Socket</title>
+        <script language="JavaScript">
+
+            var data = [];
+            var g;
+
+            function print(Adata) {
+                g.updateOptions({ 'file': Adata })
+            }
+
+        </script>
+        <script src="js/socketserver.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src='js/dygraph-combined.js\'></script>
+
+
+        <style>
+            table, td {
+                border: 1px solid black;
+            }
+        </style>
+    </thead>
+    <tbody>
+        <td>
+
+            <button onclick="Read();">Read</button>
+            <button onclick="Write();">Write</button>
+        </td>
+        <br>
+        <br>
+    <table>
+        <table id="myTable">
+            <tbody>
+                <tr>
+                    <td> Address: 0</td>
+                    <td contenteditable="true"> Value: 0</td>
+                </tr>
+                <tr>
+                    <td> Address: 1</td>
+                    <td contenteditable="true"> Value: 0</td>
+                </tr>
+                <tr>
+                    <td> Address: 2</td>
+                    <td contenteditable="true"> Value: 0</td>
+                </tr>
+                <tr>
+                    <td> Address: 3</td>
+                    <td contenteditable="true"> Value: 0</td>
+                </tr>
+                <tr>
+                    <td> Address: 4</td>
+                    <td contenteditable="true"> Value: 0</td>
+                </tr>
+                <tr>
+                    <td> Address: 5</td>
+                    <td contenteditable="true"> Value: 0</td>
+                </tr>
+                <tr>
+                    <td> Address: 6</td>
+                    <td contenteditable="true"> Value: 0</td>
+                </tr>
+                <tr>
+                    <td> Address: 7</td>
+                    <td contenteditable="true"> Value: 0</td>
+                </tr>
+                <tr>
+                    <td> Address: 8</td>
+                    <td contenteditable="true"> Value: 0</td>
+                </tr>
+                <tr>
+                    <td> Address: 9</td>
+                    <td contenteditable="true"> Value: 0</td>
+                </tr>
+            </tbody>
+        </table>
+        <tr>
+            <br><br>
+            <div id="div_g" style="width:600px; height:300px;"></div>
+        </tr>
+    </table>
+    <script language="JavaScript">
+
+        data.push([1,5]);
+
+        g = new Dygraph(document.getElementById("div_g"), data, {                             drawPoints: true,
+                drawPoints: true,
+
+                valueRange: [0.0, 100],
+                labels: ['Address', 'Value']
+            }
+        );
+
+    </script>
+    </tbody>
+</html>

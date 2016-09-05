@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>501</width>
-    <height>429</height>
+    <width>642</width>
+    <height>478</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -113,28 +113,7 @@
          <string>Read</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Start address:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QSpinBox" name="readAddress">
-           <property name="maximum">
-            <number>9</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>Number of values:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
+         <item row="1" column="5">
           <widget class="QComboBox" name="readSize">
            <property name="currentIndex">
             <number>9</number>
@@ -194,14 +173,35 @@
            </item>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="3" column="1">
           <widget class="QLabel" name="label_9">
            <property name="text">
             <string>Result:</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="0" column="5">
+          <widget class="QSpinBox" name="readAddress">
+           <property name="maximum">
+            <number>9</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Start address:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Number of values:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="4" colspan="2">
           <widget class="QListWidget" name="readValue">
            <property name="minimumSize">
             <size>
@@ -226,53 +226,21 @@
          <string>Write</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Start address:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0" colspan="2">
-          <widget class="QTreeView" name="writeValueTable">
-           <property name="showDropIndicator" stdset="0">
-            <bool>true</bool>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="rootIsDecorated">
-            <bool>false</bool>
-           </property>
-           <property name="uniformRowHeights">
-            <bool>true</bool>
-           </property>
-           <property name="itemsExpandable">
-            <bool>false</bool>
-           </property>
-           <property name="expandsOnDoubleClick">
-            <bool>false</bool>
-           </property>
-           <attribute name="headerVisible">
-            <bool>false</bool>
-           </attribute>
-          </widget>
-         </item>
-         <item row="0" column="1">
+         <item row="0" column="5">
           <widget class="QSpinBox" name="writeAddress">
            <property name="maximum">
             <number>9</number>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_8">
+         <item row="2" column="1">
+          <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Number of values:</string>
+            <string/>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="1" column="5">
           <widget class="QComboBox" name="writeSize">
            <property name="currentIndex">
             <number>9</number>
@@ -332,12 +300,47 @@
            </item>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_3">
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_7">
            <property name="text">
-            <string/>
+            <string>Start address:</string>
            </property>
           </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Number of values:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="5">
+          <widget class="QTreeView" name="writeValueTable">
+           <property name="showDropIndicator" stdset="0">
+            <bool>true</bool>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="rootIsDecorated">
+            <bool>false</bool>
+           </property>
+           <property name="uniformRowHeights">
+            <bool>true</bool>
+           </property>
+           <property name="itemsExpandable">
+            <bool>false</bool>
+           </property>
+           <property name="expandsOnDoubleClick">
+            <bool>false</bool>
+           </property>
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QListWidget" name="listWidget"/>
          </item>
         </layout>
        </widget>
@@ -399,7 +402,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>501</width>
+     <width>642</width>
      <height>19</height>
     </rect>
    </property>
@@ -458,10 +461,8 @@
   <tabstop>connectButton</tabstop>
   <tabstop>readAddress</tabstop>
   <tabstop>readSize</tabstop>
-  <tabstop>readValue</tabstop>
   <tabstop>writeAddress</tabstop>
   <tabstop>writeSize</tabstop>
-  <tabstop>writeValueTable</tabstop>
   <tabstop>readButton</tabstop>
   <tabstop>writeButton</tabstop>
   <tabstop>readWriteButton</tabstop>
